@@ -2,6 +2,7 @@ import 'package:criando_gerenciamento_estado/builders/observable_builder.dart';
 import 'package:criando_gerenciamento_estado/builders/observable_state_builder.dart';
 import 'package:criando_gerenciamento_estado/classes/counter_state.dart';
 import 'package:criando_gerenciamento_estado/controllers/state_observable.dart';
+import 'package:criando_gerenciamento_estado/mixins/change_state_mixin.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -11,9 +12,18 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with ChangeStateMixin {
   final counterState = CounterState();
   final observableCounter = StateObservable(0);
+  late StateObservable<int> newMixinObservable;
+
+  @override
+  void initState() {
+    useChangeState(counterState);
+    useChangeState(observableCounter);
+    newMixinObservable = useChangeStateObservable(0);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,27 +36,30 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ObservableStateBuilder(
-                listener: (context, state) {
-                  ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Valor do Counter State: $state'),
-                    ),
-                  );
-                },
-                buildWhen: (oldstate, newstate) {
-                  return newstate % 2 == 0;
-                },
-                stateObservable: observableCounter,
-                builder: (context, state, child) {
-                  return Text(
-                    'Valor do Counter State: $state',
-                  );
-                }),
+            Text(
+              'Valor do Counter State: ${counterState.counter}',
+            ),
+            ElevatedButton(
+              onPressed: () {
+                counterState.increment();
+              },
+              child: Text('Incrementar'),
+            ),
+            Text(
+              'Valor do Observable Counter: ${observableCounter.state}',
+            ),
             ElevatedButton(
               onPressed: () {
                 observableCounter.state++;
+              },
+              child: Text('Incrementar'),
+            ),
+            Text(
+              'Valor do New Mixin: ${newMixinObservable.state}',
+            ),
+            ElevatedButton(
+              onPressed: () {
+                newMixinObservable.state++;
               },
               child: Text('Incrementar'),
             ),
