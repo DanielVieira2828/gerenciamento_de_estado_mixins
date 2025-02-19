@@ -1,4 +1,5 @@
 import 'package:criando_gerenciamento_estado/controllers/state_observable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -82,11 +83,41 @@ void main() {
           [
             isInstanceOf<InitialState>(),
             isInstanceOf<LoadingState>(),
-            isInstanceOf<State<List<Product>>>(),
+            isInstanceOf<ErrorState>(),
           ],
         ),
       );
+      productController.generateError();
+    });
+
+    test("Should generate states in sequence when we get error", () {
+      final ProductController productController = ProductController();
+
+      expect(
+        productController.asStream(),
+        emitsInOrder(
+          [
+            isInstanceOf<InitialState>(),
+            isInstanceOf<LoadingState>(),
+            isInstanceOf<SucessState<List<Product>>>(),
+            isInstanceOf<LoadingState>(),
+            isInstanceOf<ErrorState>(),
+          ],
+        ),
+      );
+
       productController.fetchProduct();
+
+      productController.generateError();
+    });
+
+    test("Testing value notifier", () {
+      final valueNotifier = ValueNotifier(0);
+
+      expect(valueNotifier.asStream(), emitsInOrder([0, 1, 2]));
+
+      valueNotifier.value++;
+      valueNotifier.value++;
     });
   });
 }
@@ -132,6 +163,18 @@ class ProductController extends StateObservable<BaseState> {
   }
 
   void generateError() {
-    state = ErrorState(message: "Error");
+    state = LoadingState();
+
+    try {
+      throw Exception("Error");
+
+      state = SucessState(
+          data: SucessState(data: [
+        Product(id: 1, name: "Product 1"),
+        Product(id: 2, name: "Product 2")
+      ]));
+    } catch (e) {
+      state = ErrorState(message: e.toString());
+    }
   }
 }
