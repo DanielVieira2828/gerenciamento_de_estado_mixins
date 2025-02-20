@@ -10,6 +10,7 @@ mixin ChangeStateMixin<T extends StatefulWidget> on State<T> {
     _changeState.add(changeState);
   }
 
+  // ignore: avoid_shadowing_type_parameters
   StateObservable<T> useChangeStateObservable<T>(T state) {
     final StateObservable<T> stateObservable = StateObservable<T>(state);
     stateObservable.addListener(_callback);

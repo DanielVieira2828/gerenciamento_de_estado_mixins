@@ -1,5 +1,3 @@
-import 'package:criando_gerenciamento_estado/builders/observable_builder.dart';
-import 'package:criando_gerenciamento_estado/builders/observable_state_builder.dart';
 import 'package:criando_gerenciamento_estado/classes/counter_state.dart';
 import 'package:criando_gerenciamento_estado/controllers/state_observable.dart';
 import 'package:criando_gerenciamento_estado/mixins/change_state_mixin.dart';
