@@ -38,3 +38,51 @@ extension ObservableStateNotifier<T> on ValueNotifier<T> {
     return streamController.stream;
   }
 }
+
+// int
+
+extension ReactiveInt on int {
+  /// Create a [StateObservable] from an [int] value.
+  ///
+  /// Example: 0.obs();
+  ///
+  StateObservable<int> obs() {
+    return StateObservable<int>(this);
+  }
+}
+
+// double
+
+extension ReactiveDouble on double {
+  /// Create a [StateObservable] from a [double] value.
+  ///
+  /// Example: 0.0.obs();
+  ///
+  StateObservable<double> obs() {
+    return StateObservable<double>(this);
+  }
+}
+
+// String
+
+extension ReactiveString on String {
+  /// Create a [StateObservable] from an [String] value.
+  ///
+  /// Example: "Hello".obs();
+  ///
+  StateObservable<String> obs() {
+    return StateObservable<String>(this);
+  }
+}
+
+// bool
+
+extension ReactiveBool on bool {
+  /// Create a [StateObservable] from an [bool] value.
+  ///
+  /// Example: false.obs();
+  ///
+  StateObservable<bool> obs() {
+    return StateObservable<bool>(this);
+  }
+}
