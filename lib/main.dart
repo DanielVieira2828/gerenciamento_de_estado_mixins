@@ -1,4 +1,5 @@
 import 'package:criando_gerenciamento_estado/pages/home.dart';
+import 'package:criando_gerenciamento_estado/pages/streamTest.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: const StreamTest(),
     );
   }
 }
